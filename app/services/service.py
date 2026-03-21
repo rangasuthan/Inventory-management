@@ -2,11 +2,14 @@ from sqlalchemy.orm import Session
 from app.repo.repository import InventoryRepository
 from app.schema.schema import Inventory
 from app.core.logger import logger
+from app.utils.exceptions import ItemNotFoundException,InvalidStockException
 class InventoryService:
 
     @staticmethod
     def create_items(db:Session,items:Inventory):
         logger.info("creating item: "+items.name)
+        if items.price <= 0 or items.quantity < 0:
+            raise InvalidStockException("Price must be >0 and quantity >=0")
         return InventoryRepository.create(db,items)
     
     @staticmethod
@@ -32,5 +35,6 @@ class InventoryService:
             logger.info(result.name+" deleted successfully")
         else:
             logger.warning("Item id not exsist")
+            raise ItemNotFoundException(name=f"ID {item_id}")
         return result
     
