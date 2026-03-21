@@ -1,11 +1,12 @@
 from sqlalchemy.orm import Session
 from app.repo.repository import InventoryRepository
 from app.schema.schema import Inventory
-
+from app.core.logger import logger
 class InventoryService:
 
     @staticmethod
     def create_items(db:Session,items:Inventory):
+        logger.info("creating item: "+items.name)
         return InventoryRepository.create(db,items)
     
     @staticmethod
@@ -26,6 +27,10 @@ class InventoryService:
     
     @staticmethod
     def delete_items(db:Session,item_id:int):
-        return InventoryRepository.delete(db,item_id)
-    
+        result=InventoryRepository.delete(db,item_id)
+        if result:
+            logger.info("Item deleted successfully")
+        else:
+            logger.warning("Item id not exsist")
+        return result
     
