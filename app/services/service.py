@@ -27,9 +27,9 @@ class InventoryService:
     
     @staticmethod
     def delete_items(db:Session,item_id:int):
-        result=InventoryRepository.delete(db,item_id)
+        result= InventoryRepository.delete(db,item_id)
         if result:
-            logger.info("Item deleted successfully")
+            logger.info(result.name+" deleted successfully")
         else:
             logger.warning("Item id not exsist")
         return result
