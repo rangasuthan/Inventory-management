@@ -33,6 +33,18 @@ class InventoryRepository:
         return db.query(Inventory).filter(Inventory.quantity<threshold).all()
     
     @staticmethod
+    def update(db:Session,item_id:int,items:Inventory):
+        update_item=db.query(Inventory).filter(Inventory.id==item_id).first()
+        update_item.name=items.name
+        update_item.price=items.price
+        update_item.quantity=items.quantity
+        db.commit()
+        db.refresh(update_item)
+        return update_item
+        
+
+    
+    @staticmethod
     def delete(db:Session,item_id:int):
         item=db.query(Inventory).filter(Inventory.id==item_id).first()
         if item:

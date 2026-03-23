@@ -26,6 +26,10 @@ def get_total(db:Session=Depends(get_db)):
 def get_low(threshold:int=3,db:Session=Depends(get_db)):
     return InventoryService.get_items_lowstock(db,threshold)
 
+@router.put("/update",response_model=ItemResponse)
+def update_item(item_id:int,item:ItemCreate,db:Session=Depends(get_db)):
+    return InventoryService.updating_item(db,item_id,item)
+
 @router.delete("/")
 def remove_item(item_id:int,db:Session=Depends(get_db)):
     return InventoryService.delete_items(db,item_id)

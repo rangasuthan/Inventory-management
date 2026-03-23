@@ -29,6 +29,10 @@ class InventoryService:
         return InventoryRepository.get_low_stockitem(db,threshold)
     
     @staticmethod
+    def updating_item(db:Session,item_id:int,items:Inventory):
+        return InventoryRepository.update(db,item_id,items)
+    
+    @staticmethod
     def delete_items(db:Session,item_id:int):
         result= InventoryRepository.delete(db,item_id)
         if result:
